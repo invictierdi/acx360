@@ -15,6 +15,25 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
+
+acunetix_scan_job:
+    runs-on: ubuntu-20.04
+    steps:
+      # Starts actions with given inputs
+      - name: Start Acunetix 360 Scan
+        uses: Acunetix360/Acunetix-360-GitHub-Actions@v0.0.1
+        id: acunetix-360-scan-step
+        with:
+          website-id: '0c22bfb3-10bc-45af-98e0-acf3027e9885'
+          scan-type: 'FullWithPrimaryProfile'
+          profile-id: '00000000-0000-0000-0000-000000000000'
+          user-id: ${{ secrets.ACUNETIX_USER_ID }}
+          api-token: ${{ secrets.ACUNETIX_API_TOKEN }}
+          base-url: 'https://online.acunetix360.com'
+      # Displays output for action
+      - name: Display Scan Request Message
+        run: echo "${{ steps.acunetix-360-scan-step.outputs.scan-message }}"
+
   # This workflow contains a single job called "build"
   build:
     # The type of runner that the job will run on
@@ -35,20 +54,3 @@ jobs:
           echo Add other actions to build,
           echo test, and deploy your project.
           
-acunetix_scan_job:
-    runs-on: ubuntu-20.04
-    steps:
-      # Starts actions with given inputs
-      - name: Start Acunetix 360 Scan
-        uses: Acunetix360/Acunetix-360-GitHub-Actions@v0.0.1
-        id: acunetix-360-scan-step
-        with:
-          website-id: '0c22bfb3-10bc-45af-98e0-acf3027e9885'
-          scan-type: 'FullWithPrimaryProfile'
-          profile-id: '00000000-0000-0000-0000-000000000000'
-          user-id: ${{ secrets.ACUNETIX_USER_ID }}
-          api-token: ${{ secrets.ACUNETIX_API_TOKEN }}
-          base-url: 'https://online.acunetix360.com'
-      # Displays output for action
-      - name: Display Scan Request Message
-        run: echo "${{ steps.acunetix-360-scan-step.outputs.scan-message }}"
